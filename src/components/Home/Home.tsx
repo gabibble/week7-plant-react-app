@@ -2,33 +2,19 @@ import React from "react";
 import { styled } from "@mui/system";
 import { Button } from "@mui/material";
 import drone_image from "../../assets/images/plants.jpg";
-import { createTheme } from "@mui/material/styles";
+// import { createTheme } from "@mui/material/styles";
+import { theme } from "../../Theme/themes";
+
 import { Link } from "react-router-dom";
 
 interface Props {
   title: string;
 }
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      light: "#33abb8",
-      main: "#0097a7",
-      dark: "#006974",
-      contrastText: "#fff",
-    },
-    secondary: {
-      light: "#ebf1af",
-      main: "#e6ee9c",
-      dark: "#a1a66d",
-      contrastText: "#000",
-    },
-  },
-});
 const Root = styled("div")({
   padding: 0,
   margin: 0,
-  "background-color": theme.palette.secondary.light,
+  backgroundColor: theme.palette.secondary.light,
 });
 const NavbarContainer = styled("div")({
   display: "flex",
@@ -52,7 +38,7 @@ const NavA = styled(Link)({
   display: "block",
   padding: "1em",
   color: theme.palette.primary.dark,
-  'text-decoration': "none"
+  "text-decoration": "none",
 });
 const Main = styled("main")({
   backgroundImage: `linear-gradient(rgba(0, 100, 100, 0.6), rgba(50, 50, 0, 0.7)), url(${drone_image});`,
@@ -71,7 +57,11 @@ const MainText = styled("div")({
   transform: "translate(-50%, -50%)",
   color: "white",
 });
-
+const myStyles = {
+  button: {
+    textTransform: "lowercase",
+  },
+};
 export const Home = (props: Props) => {
   return (
     <Root>
@@ -97,7 +87,7 @@ export const Home = (props: Props) => {
           <p>Plants grow on you</p>
           <br></br>
           <Button
-            color="info"
+            sx={myStyles.button}
             variant="contained"
             component={Link}
             to="/dashboard"
