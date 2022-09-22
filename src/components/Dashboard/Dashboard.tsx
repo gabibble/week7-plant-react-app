@@ -8,16 +8,20 @@ import {
   Toolbar,
   IconButton,
   Typography,
-  Divider,
   Button,
   CssBaseline,
   Box,
+  Dialog, // new item
+  DialogActions, // new item
+  DialogContent, // new item
+  DialogContentText, // new item
+  DialogTitle, // new item
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { ChevronRight, ChevronLeft } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { theme } from "../../Theme/themes";
-import { DataTable } from "../DataTable/DataTable";
+import { DataTable, PlantForm } from "../../components"; 
 
 
 const drawerWidth = 240;
@@ -91,6 +95,7 @@ const myStyles = {
 export const Dashboard = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -98,6 +103,15 @@ export const Dashboard = () => {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  // Handle Dialog Open/Close
+  const handleDialogClickOpen = () => {
+    setDialogOpen(true);
+  };
+
+  const handleDialogClickClose = () => {
+    setDialogOpen(false);
   };
 
   const itemsList = [
@@ -132,7 +146,23 @@ export const Dashboard = () => {
             {" "}
             Dashboard
           </Typography>
-          <Button sx={myStyles.toolbar_button}>Add a plant</Button>
+          <Button sx={myStyles.toolbar_button} onClick={handleDialogClickOpen}>Add a plant</Button>
+          <Dialog
+            open={dialogOpen}
+            onClose={handleDialogClickClose}
+            aria-labelledby="form-dialog-title"
+          >
+            <DialogTitle id="form-dialog-title">Add New Plant</DialogTitle>
+            <DialogContent>
+              <DialogContentText>Add A New Plant</DialogContentText>
+              <PlantForm />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleDialogClickClose} color="primary">
+                Cancel
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Toolbar>
       </AppBar>
       <MUIDrawer
@@ -161,7 +191,7 @@ export const Dashboard = () => {
       <Box sx={myStyles.content}>
         <Box sx={myStyles.content} />
 
-        <DataTable/>
+        <DataTable />
         {/* <DataTable /> We will add this shortly*/}
       </Box>
     </Box>
