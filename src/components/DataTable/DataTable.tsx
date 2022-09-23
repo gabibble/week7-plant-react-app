@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { DataGrid, GridColDef, GridSelectionModel } from "@mui/x-data-grid";
+import { useDispatch, useSelector, useStore } from "react-redux";
+
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -17,7 +20,9 @@ import {
   DialogTitle,
 } from "@mui/material"; // ADD THESE
 import { PlantForm } from "../../components/PlantForm"; // ADD THIS
-import { imageSearch } from "../imageSearch";
+import { DeleteDialog } from "../DeleteDialog";
+import { ViewPlant } from "../ViewPlant";
+// import { imageSearch } from "../imageSearch";
 
 const plants = [
   {
@@ -89,18 +94,23 @@ const plants = [
 ];
 
 interface gridData {
-  data: {
-    id?: string;
-  };
+  id?: any;
+  data?: {};
 }
 
-export const DataTable = () => {
+export const DataTable = (props: gridData) => {
   let { plantData, getData } = useGetData();
   let [open, setOpen] = useState(false);
-  // let [gridData, setData] = useState<GridSelectionModel>([]);
+  let [activeId, setActiveId] = useState("");
+  let [activePlant, setActivePlant] = useState({});
+
+  let activateID = (id: any, data: {}) => {
+    setActiveId(id);
+    setActivePlant(data);
+  };
 
   let photoURL = "https://source.unsplash.com/random";
-  console.log(imageSearch("plant"));
+  // console.log(imageSearch("plant"));
 
   let handleOpen = () => {
     setOpen(true);
@@ -110,18 +120,13 @@ export const DataTable = () => {
     setOpen(false);
   };
 
-  // let deleteData = () => {
-  //   serverCalls.delete(`${gridData[0]}`);
-  //   getData();
-  // };
-
-
   return (
     <div>
       <Container sx={{ py: 8 }} maxWidth="md">
+        <ViewPlant id={activeId} data={activePlant} />
+
         <h2>Plant Collection </h2>
         <br />
-
         <Grid container spacing={4}>
           {/* needed to add ":any to avoid eerors" */}
           {plantData.map((card: any, index: any) => (
@@ -157,11 +162,12 @@ export const DataTable = () => {
                 </CardContent>
                 <CardActions>
                   <Button onClick={handleOpen} size="small">
-                    Edit
+                    Update
                   </Button>
-                  {/* <Button onClick={deleteData} size="small">
-                    Delete
-                  </Button> */}
+                  <DeleteDialog id={card.id} />
+                  <Button onClick={(event) => activateID(card.id, card)}>
+                    View
+                  </Button>
                 </CardActions>
               </Card>
               <Dialog
@@ -169,17 +175,14 @@ export const DataTable = () => {
                 onClose={handleClose}
                 aria-labelledby="form-dialog-title"
               >
-                <DialogTitle id="form-dialog-title">Update A Drone</DialogTitle>
+                <DialogTitle id="form-dialog-title">Update plant</DialogTitle>
                 <DialogContent>
-                  <DialogContentText>Drone id: {card.id}</DialogContentText>
+                  <DialogContentText>Plant: {card.commom_name}</DialogContentText>
                   <PlantForm id={card.id} />
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={handleClose} color="primary">
                     Cancel
-                  </Button>
-                  <Button onClick={handleClose} color="primary">
-                    Done
                   </Button>
                 </DialogActions>
               </Dialog>

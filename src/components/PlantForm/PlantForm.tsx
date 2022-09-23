@@ -10,7 +10,7 @@ import {
   chooseLight,
   chooseShade,
   chooseSoil,
-  chooseFertilize
+  chooseFertilize,
 } from "../../redux/slices/rootSlice";
 import { Input } from "../sharedComponents/Input";
 import { serverCalls } from "../../api";
@@ -23,7 +23,7 @@ interface PlantFormProps {
 }
 
 interface PlantState {
-  common_name: string;
+  commom_name: string;
   species_name: string;
   size: string;
   origin: string;
@@ -37,14 +37,21 @@ export const PlantForm = (props: PlantFormProps) => {
   const dispatch = useDispatch();
   let { plantData, getData } = useGetData();
   const store = useStore();
-  const common_name = useSelector<PlantState>((state) => state.common_name);
+  const commom_name = useSelector<PlantState>((state) => state.commom_name);
   const species_name = useSelector<PlantState>((state) => state.species_name);
+  const size = useSelector<PlantState>((state) => state.size);
   const origin = useSelector<PlantState>((state) => state.origin);
   const light = useSelector<PlantState>((state) => state.light);
   const soil = useSelector<PlantState>((state) => state.soil);
   const fertilize = useSelector<PlantState>((state) => state.fertilize);
 
+  //
+
   const { register, handleSubmit } = useForm({});
+
+  //  const handleChange = async (e) => {
+  //    await getData({ ...data, [e.target.name]: e.target.value });
+  //  };
 
   const onSubmit = async (data: any, event: any) => {
     console.log(props.id);
@@ -53,7 +60,6 @@ export const PlantForm = (props: PlantFormProps) => {
       await serverCalls.update(props.id!, data);
       console.log(`Updated: ${data} ${props.id}`);
       window.location.reload();
-
       event.target.reset();
     } else {
       dispatch(chooseCName(data.commom_name));
@@ -65,7 +71,6 @@ export const PlantForm = (props: PlantFormProps) => {
       dispatch(chooseSoil(data.soil));
       dispatch(chooseFertilize(data.fertilize));
 
-
       await serverCalls.create(store.getState());
       window.location.reload();
       event.target.reset();
@@ -76,10 +81,10 @@ export const PlantForm = (props: PlantFormProps) => {
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
-          <label htmlFor="common_name">Common Name</label>
+          <label htmlFor="commom_name">Common Name</label>
           <Input
             {...register("commom_name")}
-            name="Common_name"
+            name="Commom_name"
             placeholder="Common name"
           />
         </div>
@@ -93,18 +98,27 @@ export const PlantForm = (props: PlantFormProps) => {
         </div>
         <div>
           <label htmlFor="size">Size</label>
-          <Input {...register("size")} name="size" placeholder="Size" />
+          <Input
+            {...register("size")}
+            name="size"
+            placeholder="Size"
+            
+          />
         </div>
         <div>
           <label htmlFor="origin">Origin</label>
-          <Input {...register("origin")} name="origin" placeholder="Origin" />
+          <Input
+            {...register("origin")}
+            name="origin"
+            placeholder="Origin"
+          />
         </div>
         <div>
           <label htmlFor="light">Light</label>
           <Input {...register("light")} name="light" placeholder="Light" />
         </div>
         <div>
-          <label htmlFor="shade">Shade</label>
+          <label htmlFor="shade">Water</label>
           <Input {...register("shade")} name="shade" placeholder="Shade" />
         </div>
         <div>
@@ -113,7 +127,11 @@ export const PlantForm = (props: PlantFormProps) => {
         </div>
         <div>
           <label htmlFor="fertilize">Fertilize</label>
-          <Input {...register("fertilize")} name="fertilize" placeholder="Fertolize" />
+          <Input
+            {...register("fertilize")}
+            name="fertilize"
+            placeholder="Fertolize"
+          />
         </div>
 
         <Button type="submit">Submit</Button>

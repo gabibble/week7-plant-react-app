@@ -4,7 +4,7 @@ const rootSlice = createSlice({
   name: "root",
   initialState: {
     id: 1,
-    common_name: "plant",
+    commom_name: "plant",
     species_name: "plantus planti",
     size: "35",
     origin: "origin",
@@ -15,7 +15,7 @@ const rootSlice = createSlice({
   },
   reducers: {
     chooseCName: (state, action) => {
-      state.common_name = action.payload;
+      state.commom_name = action.payload;
     },
     chooseSName: (state, action) => {
       state.species_name = action.payload;
